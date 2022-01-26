@@ -23,7 +23,18 @@ Line & Line::operator=(const Line & line) {
 
 void Line::setFromAtoB(const Vector3 & A, const Vector3 & B) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	//obtienes la distancia
+	Vector3 v_aux = B-A;
+	//comprueba que no sean el mismo punto (distancia 0)
+	if (v_aux.isZero()) {
+		//comprueba que la distancia sea positiva
+		if (v_aux.length > 0.0) {
+			//obtienes el vector normalizado
+			m_d = v_aux.normalize();
+		}	
+	}
+	
+	
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -32,6 +43,8 @@ void Line::setFromAtoB(const Vector3 & A, const Vector3 & B) {
 Vector3 Line::at(float u) const {
 	Vector3 res;
 	/* =================== PUT YOUR CODE HERE ====================== */
+
+	res = m_O + u * m_d;
 
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
@@ -44,7 +57,7 @@ Vector3 Line::at(float u) const {
 float Line::paramDistance(const Vector3 & P) const {
 	float res = 0.0f;
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	res = m_d* (P-m_o)/ (m_d*m_d);
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }
@@ -57,6 +70,11 @@ float Line::paramDistance(const Vector3 & P) const {
 float Line::distance(const Vector3 & P) const {
 	float res = 0.0f;
 	/* =================== PUT YOUR CODE HERE ====================== */
+	//m_d.dot(m_d)
+	
+	//calcular u0
+	//comporbar si es < 0 > que constant epsilon
+	//calcular la distancia (res) en funcion de u0
 
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;

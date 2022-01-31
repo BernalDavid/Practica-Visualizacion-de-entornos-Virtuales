@@ -56,8 +56,12 @@ Vector3 Line::at(float u) const {
 
 float Line::paramDistance(const Vector3 & P) const {
 	float res = 0.0f;
+
+    //// COMPROBAR DENOMINADOR > 0.0
+	float denominador = m_d.dot(m_d);
+
 	/* =================== PUT YOUR CODE HERE ====================== */
-	res = m_d* (P-m_o)/ (m_d*m_d);
+	//res = m_d DOT (P-m_O)/ (m_d*m_d);
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }
@@ -69,11 +73,12 @@ float Line::paramDistance(const Vector3 & P) const {
 
 float Line::distance(const Vector3 & P) const {
 	float res = 0.0f;
+	float u0 = 0.0f;
 	/* =================== PUT YOUR CODE HERE ====================== */
-	//m_d.dot(m_d)
-	
 	//calcular u0
-	//comporbar si es < 0 > que constant epsilon
+	u0 = this.paramDistance(P);
+	//comprobar si u0 <0 (esta mal calculado en paramdistance)
+	
 	//calcular la distancia (res) en funcion de u0
 
 	/* =================== END YOUR CODE HERE ====================== */

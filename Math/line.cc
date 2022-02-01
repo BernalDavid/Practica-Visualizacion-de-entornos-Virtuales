@@ -55,13 +55,18 @@ Vector3 Line::at(float u) const {
 // u0 = m_d*(P-m_o) / m_d*m_d , where * == dot product
 
 float Line::paramDistance(const Vector3 & P) const {
-	float res = 0.0f;
-
-    //// COMPROBAR DENOMINADOR > 0.0
-	float denominador = m_d.dot(m_d);
+	float res = 0.0f; //u0
 
 	/* =================== PUT YOUR CODE HERE ====================== */
-	//res = m_d DOT (P-m_O)/ (m_d*m_d);
+	float denominador = m_d.dot(m_d);
+	// COMPROBAR DENOMINADOR > 0.0
+	if (denominador > 0.0) {
+		res = m_d.dot(P-m_O)/denominador;
+	}
+	else {
+		printf("ERROR: denominador negativo\n");
+	}
+	
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }
@@ -78,9 +83,13 @@ float Line::distance(const Vector3 & P) const {
 	//calcular u0
 	u0 = this.paramDistance(P);
 	//comprobar si u0 <0 (esta mal calculado en paramdistance)
-	
-	//calcular la distancia (res) en funcion de u0
-
+	if (u0 > 0.0) {
+		//calcular la distancia (res) en funcion de u0
+		res = P - (m_O + u)0*m_d
+	}
+	else {
+		printf("ERROR: u0 negativo");
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }

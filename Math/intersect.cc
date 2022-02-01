@@ -17,6 +17,18 @@
 
 int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	float dist_pl = pl.distance(bs.getPosition()); 	//plano-centro
+	float dist_ra = bs.getRadius();					//radio
+
+	//INTERSECTAN
+	if (dist_pl < dist_ra) {
+		return IINTERSECT;
+	}
+	else {
+		//dentro o fuera??
+		return IREJECT;
+	}
+
 
 	/* =================== END YOUR CODE HERE ====================== */
 }

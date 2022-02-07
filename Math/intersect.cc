@@ -108,8 +108,11 @@ int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
 	}
 
 	//comprobar la interseccion
+	//eje x
 	if () {
+		//eje y
 		if () {
+			//eje z
 			if () {
 				return IINTERSECT;
 			}

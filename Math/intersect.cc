@@ -18,8 +18,8 @@
 int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 	/* =================== PUT YOUR CODE HERE ====================== */
 
-	float dist_pl = pl.distance(bs.getPosition()); 	//plano-centro
-	float dist_ra = bs.getRadius();					//radio
+	float dist_pl = pl->distance(bs->getPosition()); 	//plano-centro
+	float dist_ra = bs->getRadius();					//radio
 	int side = 0;
 	//INTERSECTAN
 	if (dist_pl < dist_ra) {
@@ -27,12 +27,12 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 	}
 	else {
 		//dentro o fuera?? mirar la direccion del vector normal
-		side = pl.whichSide(bs.getPosition());
+		side = pl->whichSide(bs->getPosition());
 		if (side == -1) {
 		 	return -IREJECT;
 		}
 		else if (side == 1) {
-			return +IREJECT:
+			return +IREJECT;
 		}
 		return IREJECT;
 	}
@@ -50,11 +50,11 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
 
 	//comprobar eje x
-	if ( (bba.m_max.x() >= bbb.m_min.x()) || (bbb.m_max.x() >= bba.m_min.x()) ) {
+	if ( (bba->m_max.x() >= bbb->m_min.x()) || (bbb->m_max.x() >= bba->m_min.x()) ) {
 		//si intersectan, comprobar eje y
-		if ( (bba.m_max.y() >= bbb.m_min.y()) || (bbb.m_max.y() >= bba.m_min.y()) ) {
+		if ( (bba->m_max.y() >= bbb->m_min.y()) || (bbb->m_max.y() >= bba->m_min.y()) ) {
 			//si intersectan, comprobar eje z
-			if ( (bba.m_max.z() >= bbb.m_min.z()) || (bbb.m_max.z() >= bba.m_min.z()) ) {
+			if ( (bba->m_max.z() >= bbb->m_min.z()) || (bbb->m_max.z() >= bba->m_min.z()) ) {
 				return IINTERSECT;
 			}
 		}
@@ -73,55 +73,51 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 
 int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	float xcercano, ycercano, zcercano, xlejano, ylejano, zlejano = 0.0f;
+	Vector3 cercano, lejano;
 	
 	//Obtener los puntos maximo y minimo de la diagonal
 	//eje x +
-	if (thePlane.m_n.x() > 0) {
-		xcercano = theBBox.m_min.x();
-		xlejano = theBBox.m_max.x();
+	if (thePlane->m_n.x() > 0) {
+		cercano.x() = theBBox->m_min.x();
+		lejano.x() = theBBox->m_max.x();
 	}
 	//eje x -
 	else {
-		xcercano = theBBox.m_max.x();
-		xlejano = theBBox.m_min.x();
+		cercano.x() = theBBox->m_max.x();
+		lejano.x() = theBBox->m_min.x();
 	}
 	//eje y +
-	if (thePlane.m_n.y() > 0) {
-		ycercano = theBBox.m_min.y();
-		ylejano = theBBox.m_max.y();
+	if (thePlane->m_n.y() > 0) {
+		cercano.y() = theBBox->m_min.y();
+		lejano.y() = theBBox->m_max.y();
 	}
 	//eje y -
 	else {
-		ycercano = theBBox.m_max.y();
-		ylejano = theBBox.m_min.y();
+		cercano.y() = theBBox->m_max.y();
+		lejano.y() = theBBox->m_min.y();
 	}
 	//eje z +
-	if (thePlane.m_n.z() > 0) {
-		zcercano = theBBox.m_min.z();
-		zlejano = theBBox.m_max.z();
+	if (thePlane->m_n.z() > 0) {
+		cercano.z() = theBBox->m_min.z();
+		lejano.z() = theBBox->m_max.z();
 	}
 	//eje z -
 	else {
-		zcercano = theBBox.m_max.z();
-		zlejano = theBBox.m_min.z();
+		cercano.z() = theBBox->m_max.z();
+		lejano.z() = theBBox->m_min.z();
 	}
 
 	//comprobar la interseccion
-	//eje x
-	if () {
-		//eje y
-		if () {
-			//eje z
-			if () {
-				return IINTERSECT;
-			}
-		}
+	int posCercano = thePlane->whichSide(cercano);
+	int posLejano = thePlane->whichSide(lejano);
+
+	if (posCercano==posLejano) {
+		if (posCercano >0) return +IREJECT;
+		if (posCercano <0) return -IREJECT;
 	}
 
+	return IINTERSECT;
 	
-		
-
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

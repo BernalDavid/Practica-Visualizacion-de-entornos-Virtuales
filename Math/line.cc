@@ -23,15 +23,17 @@ Line & Line::operator=(const Line & line) {
 
 void Line::setFromAtoB(const Vector3 & A, const Vector3 & B) {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	
 	//obtienes la distancia
 	Vector3 v_aux = B-A;
 	//comprueba que no sean el mismo punto (distancia 0)
 	if (v_aux.isZero()) {
-		//comprueba que la distancia sea positiva
-		if (v_aux.length > 0.0) {
 			//obtienes el vector normalizado
+			m_O = A;
 			m_d = v_aux.normalize();
-		}	
+	}
+	else {
+		printf("Los puntos son iguales\n");
 	}
 	
 	
@@ -56,18 +58,19 @@ Vector3 Line::at(float u) const {
 
 float Line::paramDistance(const Vector3 & P) const {
 	float res = 0.0f; //u0
-
 	/* =================== PUT YOUR CODE HERE ====================== */
+
 	float denominador = m_d.dot(m_d);
 	// COMPROBAR DENOMINADOR > 0.0
 	if (denominador > 0.0) {
-		res = m_d.dot(P-m_O)/denominador;
+		res = (m_d.dot(P-m_O))/denominador;
 	}
 	else {
 		printf("ERROR: denominador negativo\n");
 	}
 	
 	/* =================== END YOUR CODE HERE ====================== */
+	printf("paramDIstance\n");
 	return res;
 }
 
@@ -78,19 +81,23 @@ float Line::paramDistance(const Vector3 & P) const {
 
 float Line::distance(const Vector3 & P) const {
 	float res = 0.0f;
-	float u0 = 0.0f;
+	
 	/* =================== PUT YOUR CODE HERE ====================== */
 	//calcular u0
-	u0 = this.paramDistance(P);
+	float u0 = paramDistance(P);
+	
+	
 	//comprobar si u0 <0 (esta mal calculado en paramdistance)
 	if (u0 > 0.0) {
 		//calcular la distancia (res) en funcion de u0
-		res = P - (m_O + u)0*m_d
+		Vector3 v= P - (m_O + u0*m_d);
+		res = v.dot(v); //se puede hacer aux.length()
 	}
 	else {
 		printf("ERROR: u0 negativo");
 	}
 	/* =================== END YOUR CODE HERE ====================== */
+	printf("distance\n");
 	return res;
 }
 

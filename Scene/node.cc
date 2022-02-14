@@ -271,11 +271,13 @@ void Node::addChild(Node *theChild) {
 	if (m_gObject) {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node has a gObject, so print warning
+		printf("ERROR: El nodo tiene ya un gObject\n");
 
 		/* =================== END YOUR CODE HERE ====================== */
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
+		m_gObject->add(theChild);
 
 		/* =================== END YOUR CODE HERE ====================== */
 
@@ -416,6 +418,33 @@ void Node::draw() {
 		BBoxGL::draw( m_containerWC );
 
 	/* =================== PUT YOUR CODE HERE ====================== */
+
+	/*
+	SI SOY UN NODO HOJA {
+		dibujar mi objeto
+	}
+
+	SI NO {
+		pasar a dibujar mis hijos
+	}
+	*/
+	rs->push(RenderState::modelview);
+	rs-> addTrfm(RenderState::modelview, this.m_placement);
+
+	if (m_gObject) {
+		//NODO HOJA
+		//m_gObject.draw();
+		m_gObject->draw();	//dibujar el objeto
+	}
+	else {
+		//NODO INTERMEDIO
+		//recorrer la lista de sus hijos (llamar recursivamente a draw())
+	    for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
+        		auto theChild = *it;
+        		theChild->draw(); // or any other thing
+	    }
+	}
+	rs->pop(RenderState::modelview);
 
 	/* =================== END YOUR CODE HERE ====================== */
 

@@ -277,7 +277,10 @@ void Node::addChild(Node *theChild) {
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
-		m_gObject->add(theChild);
+		theChild->m_parent = this;
+		m_children->push_back(theChild);
+		
+		//m_gObject->add(theChild);
 
 		/* =================== END YOUR CODE HERE ====================== */
 
@@ -341,6 +344,7 @@ void Node::propagateBBRoot() {
 void Node::updateBB () {
 	/* =================== PUT YOUR CODE HERE ====================== */
 
+
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -363,6 +367,34 @@ void Node::updateBB () {
 
 void Node::updateWC() {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	
+	/*
+	if soy el nodo ROOT (m_parent==0) {
+		m_placementWC= m_placement
+	}
+	else {
+		m_placementWC= COMPOSICION //(m_placementWC_de_mi_padre, m_placement)
+		llamar recursivamente a updateWC con tus hijos si los tienes
+	}
+	*/
+
+	if (m_parent==0) {
+		m_placementWC->clone(m_placement);
+
+	}
+	else {
+		m_parent->m_placementWC->add(this->m_placement);
+		m_placementWC->clone(m_parent->m_placementWC);
+
+		//dentro o fuera del else???
+		for(auto it = m_children.begin(), end = m_children.end();
+        it != end; ++it) {
+       		auto theChild = *it;
+       		theChild->updateWC(); // or any other thing
+    	}
+	}
+
+	
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -377,7 +409,7 @@ void Node::updateWC() {
 
 void Node::updateGS() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -428,23 +460,24 @@ void Node::draw() {
 		pasar a dibujar mis hijos
 	}
 	*/
-	rs->push(RenderState::modelview);
-	rs-> addTrfm(RenderState::modelview, this.m_placement);
 
 	if (m_gObject) {
+		rs->push(RenderState::modelview);
+		rs-> addTrfm(RenderState::modelview, this->m_placement);
 		//NODO HOJA
-		//m_gObject.draw();
 		m_gObject->draw();	//dibujar el objeto
+		rs->pop(RenderState::modelview);
 	}
 	else {
 		//NODO INTERMEDIO
 		//recorrer la lista de sus hijos (llamar recursivamente a draw())
+		//for (list<Node *>::iterator it = m_children.begin(), end =m_children.end(); it !=end; ++it)
 	    for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
         		auto theChild = *it;
         		theChild->draw(); // or any other thing
 	    }
 	}
-	rs->pop(RenderState::modelview);
+	
 
 	/* =================== END YOUR CODE HERE ====================== */
 

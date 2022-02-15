@@ -27,7 +27,8 @@ void Line::setFromAtoB(const Vector3 & A, const Vector3 & B) {
 	//obtienes la distancia
 	Vector3 v_aux = B-A;
 	//comprueba que no sean el mismo punto (distancia 0)
-	if (v_aux.isZero()) {
+	//if (v_aux.isZero()) {
+	if (v_aux.length()>0.0) {
 			//obtienes el vector normalizado
 			m_O = A;
 			m_d = v_aux.normalize();
@@ -59,7 +60,7 @@ Vector3 Line::at(float u) const {
 float Line::paramDistance(const Vector3 & P) const {
 	float res = 0.0f; //u0
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	
 	float denominador = m_d.dot(m_d);
 	// COMPROBAR DENOMINADOR > 0.0
 	if (denominador > 0.0) {
@@ -70,7 +71,7 @@ float Line::paramDistance(const Vector3 & P) const {
 	}
 	
 	/* =================== END YOUR CODE HERE ====================== */
-	printf("paramDIstance\n");
+	
 	return res;
 }
 
@@ -97,7 +98,7 @@ float Line::distance(const Vector3 & P) const {
 		printf("ERROR: u0 negativo");
 	}
 	/* =================== END YOUR CODE HERE ====================== */
-	printf("distance\n");
+	
 	return res;
 }
 

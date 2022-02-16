@@ -87,12 +87,12 @@ float Line::distance(const Vector3 & P) const {
 	//calcular u0
 	float u0 = paramDistance(P);
 	
-	
-	//comprobar si u0 <0 (esta mal calculado en paramdistance)
+	//comprobar si u0 <0 (esta mal calculado en paramDistance)
 	if (u0 > 0.0) {
 		//calcular la distancia (res) en funcion de u0
-		Vector3 v= P - (m_O + u0*m_d);
-		res = v.dot(v); //se puede hacer aux.length()
+		Vector3 v = P - (m_O + u0*m_d);
+		//res = v.dot(v); //se puede hacer v.length()
+		res = v.length();
 	}
 	else {
 		printf("ERROR: u0 negativo");

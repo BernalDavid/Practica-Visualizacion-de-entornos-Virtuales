@@ -277,9 +277,9 @@ void Node::addChild(Node *theChild) {
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
-		theChild->m_parent = this;
-		m_children->push_back(theChild);
 		
+		theChild->m_parent = this;
+		m_children.push_back(theChild);
 		//m_gObject->add(theChild);
 
 		/* =================== END YOUR CODE HERE ====================== */
@@ -409,7 +409,7 @@ void Node::updateWC() {
 
 void Node::updateGS() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	
+	updateWC();
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -477,7 +477,6 @@ void Node::draw() {
         		theChild->draw(); // or any other thing
 	    }
 	}
-	
 
 	/* =================== END YOUR CODE HERE ====================== */
 

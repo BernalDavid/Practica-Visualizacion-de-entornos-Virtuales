@@ -281,6 +281,7 @@ void Node::addChild(Node *theChild) {
 		// node does not have gObject, so attach child
 		theChild->m_parent = this;
 		m_children.push_back(theChild);
+		theChild->updateGS();
 
 		/* =================== END YOUR CODE HERE ====================== */
 
@@ -383,16 +384,21 @@ void Node::updateWC() {
 
 	}
 	else {
-		m_parent->m_placementWC->add(this->m_placement);
+		/*
+		Trfm3D *aux= 0;
+		aux->clone(m_parent->m_placementWC);
+		aux->add(m_placement);
+		m_placementWC->clone(aux);
+		*/
 		m_placementWC->clone(m_parent->m_placementWC);
+		m_placementWC->add(m_placement);
 
-		//dentro o fuera del else???
-		for(auto it = m_children.begin(), end = m_children.end();
+	}
+	for(auto it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
        		auto theChild = *it;
        		theChild->updateWC(); // or any other thing
     	}
-	}
 
 	
 
@@ -460,28 +466,27 @@ void Node::draw() {
 		pasar a dibujar mis hijos
 	}
 	*/
-	
+
 	//modo local se deja fuera
-	rs->push(RenderState::modelview);
-	rs-> addTrfm(RenderState::modelview, this->m_placement);
+	//rs->push(RenderState::modelview);
+	//rs-> addTrfm(RenderState::modelview, this->m_placement);
 
 	if (m_gObject) {
-		//rs->push(RenderState::modelview);
-		//rs-> addTrfm(RenderState::modelview, this->m_placement);
+		rs->push(RenderState::modelview);
+		rs-> addTrfm(RenderState::modelview, this->m_placement);
 		//NODO HOJA
 		m_gObject->draw();	//dibujar el objeto
-		//rs->pop(RenderState::modelview);
+		rs->pop(RenderState::modelview);
 	}
 	else {
 		//NODO INTERMEDIO
 		//recorrer la lista de sus hijos (llamar recursivamente a draw())
-		//for (list<Node *>::iterator it = m_children.begin(), end =m_children.end(); it !=end; ++it)
 	    for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
         		auto theChild = *it;
         		theChild->draw(); // or any other thing
 	    }
 	}
-	rs->pop(RenderState::modelview);
+	//rs->pop(RenderState::modelview);
 
 	/* =================== END YOUR CODE HERE ====================== */
 

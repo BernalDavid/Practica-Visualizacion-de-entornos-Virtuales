@@ -270,17 +270,17 @@ void Node::addChild(Node *theChild) {
 	if (theChild == 0) return;
 	if (m_gObject) {
 		/* =================== PUT YOUR CODE HERE ====================== */
+		
 		// node has a gObject, so print warning
 		printf("ERROR: El nodo tiene ya un gObject\n");
 
 		/* =================== END YOUR CODE HERE ====================== */
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
-		// node does not have gObject, so attach child
 		
+		// node does not have gObject, so attach child
 		theChild->m_parent = this;
 		m_children.push_back(theChild);
-		//m_gObject->add(theChild);
 
 		/* =================== END YOUR CODE HERE ====================== */
 
@@ -460,13 +460,17 @@ void Node::draw() {
 		pasar a dibujar mis hijos
 	}
 	*/
+	
+	//modo local se deja fuera
+	rs->push(RenderState::modelview);
+	rs-> addTrfm(RenderState::modelview, this->m_placement);
 
 	if (m_gObject) {
-		rs->push(RenderState::modelview);
-		rs-> addTrfm(RenderState::modelview, this->m_placement);
+		//rs->push(RenderState::modelview);
+		//rs-> addTrfm(RenderState::modelview, this->m_placement);
 		//NODO HOJA
 		m_gObject->draw();	//dibujar el objeto
-		rs->pop(RenderState::modelview);
+		//rs->pop(RenderState::modelview);
 	}
 	else {
 		//NODO INTERMEDIO
@@ -477,6 +481,7 @@ void Node::draw() {
         		theChild->draw(); // or any other thing
 	    }
 	}
+	rs->pop(RenderState::modelview);
 
 	/* =================== END YOUR CODE HERE ====================== */
 

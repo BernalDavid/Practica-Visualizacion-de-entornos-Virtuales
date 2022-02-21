@@ -281,8 +281,8 @@ void Node::addChild(Node *theChild) {
 		// node does not have gObject, so attach child
 		theChild->m_parent = this;
 		m_children.push_back(theChild);
-		theChild->updateGS();
-
+	
+		updateGS();
 		/* =================== END YOUR CODE HERE ====================== */
 
 	}
@@ -381,24 +381,18 @@ void Node::updateWC() {
 
 	if (m_parent==0) {
 		m_placementWC->clone(m_placement);
-
 	}
 	else {
-		/*
-		Trfm3D *aux= 0;
-		aux->clone(m_parent->m_placementWC);
-		aux->add(m_placement);
-		m_placementWC->clone(aux);
-		*/
 		m_placementWC->clone(m_parent->m_placementWC);
 		m_placementWC->add(m_placement);
-
+		
 	}
 	for(auto it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
        		auto theChild = *it;
        		theChild->updateWC(); // or any other thing
     	}
+	
 
 	
 
@@ -473,7 +467,7 @@ void Node::draw() {
 
 	if (m_gObject) {
 		rs->push(RenderState::modelview);
-		rs-> addTrfm(RenderState::modelview, this->m_placement);
+		rs-> addTrfm(RenderState::modelview, this->m_placementWC);
 		//NODO HOJA
 		m_gObject->draw();	//dibujar el objeto
 		rs->pop(RenderState::modelview);
@@ -486,6 +480,7 @@ void Node::draw() {
         		theChild->draw(); // or any other thing
 	    }
 	}
+	//modo local
 	//rs->pop(RenderState::modelview);
 
 	/* =================== END YOUR CODE HERE ====================== */

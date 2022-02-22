@@ -344,7 +344,24 @@ void Node::propagateBBRoot() {
 
 void Node::updateBB () {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	
+	/*
+	BBox aux->clone(this->m_containerWC);
+	aux->transform(m_placementWC);
+	this->m_containerWC->include(aux);
+	*/
+	if (m_parent==0) {
+		//nodo root
+	}
+	else {
+		//nodos hoja
+		
+	}
+	for(auto it = m_children.begin(), end = m_children.end();
+        it != end; ++it) {
+        auto theChild = *it;
+        theChild->updateBB(); // or any other thing
+    }
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -539,3 +556,9 @@ void Node::print_trfm(int sep) const {
 		theChild->print_trfm(sep + 1);
 	}
 }
+
+//si hay colision con objeto
+	//exit diciendo hay colision
+//else no hay colision
+	//mirar hijos
+

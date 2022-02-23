@@ -311,6 +311,20 @@ void Node::detach() {
 
 void Node::propagateBBRoot() {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	
+	updateBB();
+	//Propagar el update al padre
+	if (m_parent) {
+		m_parent->propagateBBRoot();
+	}
+	
+	/*
+    for(auto it = m_children.begin(), end = m_children.end();
+		it != end; ++it) {
+        auto theChild = *it;
+        theChild->propagateBBRoot(); // or any other thing
+    }
+	*/
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -346,22 +360,26 @@ void Node::updateBB () {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	
 	/*
-	BBox aux->clone(this->m_containerWC);
-	aux->transform(m_placementWC);
-	this->m_containerWC->include(aux);
+	si es un nodo hoja: transformar bbox del objeto en el sistema de coordenadas del mundo (usar transform())
+	si es un nodo intermedio: el bbox es la union de los bbox de los hijos (usar include())
+	llamar recursivamente a los hijos
 	*/
-	if (m_parent==0) {
-		//nodo root
+	//NODO HOJA
+	if(m_gObject) {
+		//primero se obtiene el container
+		m_containerWC->clone(m_gObject->getContainer());
+		m_containerWC->transform(m_placementWC);
 	}
+	//NO INTERMEDIO
 	else {
-		//nodos hoja
-		
-	}
-	for(auto it = m_children.begin(), end = m_children.end();
+		m_containerWC->init();
+		for(auto it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
         auto theChild = *it;
-        theChild->updateBB(); // or any other thing
-    }
+		m_containerWC->include(theChild->m_containerWC);
+    	}
+	}
+	
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -404,11 +422,14 @@ void Node::updateWC() {
 		m_placementWC->add(m_placement);
 		
 	}
+	
 	for(auto it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
        		auto theChild = *it;
        		theChild->updateWC(); // or any other thing
     	}
+	//actualizamos BBox
+	updateBB();
 	
 
 	
@@ -427,6 +448,10 @@ void Node::updateWC() {
 void Node::updateGS() {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	updateWC();
+	//si el padre existe, usar propagateBBRoot()
+	if (m_parent) {
+		propagateBBRoot();
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -557,8 +582,25 @@ void Node::print_trfm(int sep) const {
 	}
 }
 
-//si hay colision con objeto
+/*
+------------------CAMARAS----------------------------
+//si hay colision con objeto (nodo hoja)
 	//exit diciendo hay colision
 //else no hay colision
 	//mirar hijos
 
+si hay colision: mirar si alguno de sus hijos colisiona tambien
+si no hay colision pasar a otro nodo (al mismo nivel)
+si hay colision con el nodo hoja: parar
+si ninguno de los nodo hoja tiene colision: parar
+
+Node -> checkCollision() <- RootNode
+Advance()				AVATAR
+getPosition()			<-CAMARA
+getDirection()
+savePosition()			ESFERA
+restorePosition()
+fly()
+walk()
+
+*/

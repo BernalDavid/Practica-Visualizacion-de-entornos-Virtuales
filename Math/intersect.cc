@@ -50,11 +50,11 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
 
 	//comprobar eje x
-	if ( (bba->m_max.x() >= bbb->m_min.x()) || (bbb->m_max.x() >= bba->m_min.x()) ) {
+	if ( (bba->m_max.x() >= bbb->m_min.x()) & (bbb->m_max.x() >= bba->m_min.x()) ) {
 		//si intersectan, comprobar eje y
-		if ( (bba->m_max.y() >= bbb->m_min.y()) || (bbb->m_max.y() >= bba->m_min.y()) ) {
+		if ( (bba->m_max.y() >= bbb->m_min.y()) & (bbb->m_max.y() >= bba->m_min.y()) ) {
 			//si intersectan, comprobar eje z
-			if ( (bba->m_max.z() >= bbb->m_min.z()) || (bbb->m_max.z() >= bba->m_min.z()) ) {
+			if ( (bba->m_max.z() >= bbb->m_min.z()) & (bbb->m_max.z() >= bba->m_min.z()) ) {
 				return IINTERSECT;
 			}
 		}

@@ -44,9 +44,21 @@ void Trfm3D::clone( const Trfm3D *T ) {	clone(*T); }
 //   - suppose that m_d == (0,0,0)
 //   - suppose that m_w == 1
 
+
+/*     | c1.x*s  c2.x*s  c3.x*s tr.x | */
+/* M = | c1.y*s  c2.y*s  c3.y*s tr.y | */
+/*     | c1.z*s  c2.z*s  c3.z*s tr.z | */
+/*     |   d.x     d.y     d.z   w   | */
+
+
 Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 	Vector3 res;
 	/* =================== PUT YOUR CODE HERE ====================== */
+	
+	res[0] = m_c1[0]*P[0] + m_c2[0]*P[1] + m_c3[0]*P[2] + m_tr[0]*1;
+	res[1] = m_c1[1]*P[0] + m_c2[1]*P[1] + m_c3[1]*P[2] + m_tr[1]*1;
+	res[2] = m_c1[2]*P[0] + m_c2[2]*P[1] + m_c3[2]*P[2] + m_tr[2]*1;
+
 
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
@@ -63,6 +75,10 @@ Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 Vector3 Trfm3D::transformVector(const Vector3 & V) const {
 	Vector3 res;
 	/* =================== PUT YOUR CODE HERE ====================== */
+
+	res[0] = m_c1[0]*V[0] + m_c2[0]*V[1] + m_c3[0]*V[2] + m_tr[0]*0;
+	res[1] = m_c1[1]*V[0] + m_c2[1]*V[1] + m_c3[1]*V[2] + m_tr[1]*0;
+	res[2] = m_c1[2]*V[0] + m_c2[2]*V[1] + m_c3[2]*V[2] + m_tr[2]*0;
 
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
@@ -418,7 +434,7 @@ void Trfm3D::setScale(float scale ) {
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

@@ -59,7 +59,6 @@ Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 	res[1] = m_c1[1]*P[0] + m_c2[1]*P[1] + m_c3[1]*P[2] + m_tr[1]*1;
 	res[2] = m_c1[2]*P[0] + m_c2[2]*P[1] + m_c3[2]*P[2] + m_tr[2]*1;
 
-
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }
@@ -434,7 +433,13 @@ void Trfm3D::setScale(float scale ) {
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	
+	//Traslacion P
+	setTrans(P);
+	//Rotar el vector los radianes que nos dan
+	addRotVec(V,angle);
+	//Deshacer la traslacion
+	setTrans(P*(-1));
+
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

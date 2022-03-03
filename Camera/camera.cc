@@ -142,15 +142,23 @@ void OrthographicCamera::updateProjection() {
 
 void PerspectiveCamera::updateProjection() {
 	/* =================== PUT YOUR CODE HERE ====================== */
+<<<<<<< HEAD
 	//conseguir left, right, bottom, top, near, far y actualizar frustum
 	float left, right, bottom, top;
 
 	//t = n*tan(m_fovy/2)
 	top = m_near *tan(m_fovy/2.0);
+=======
+	float top, bottom, right, left;
+	//obtener top, bottom, right, left near y far y añadirlas al frustum
+	//t = n*tan(fovy/2)
+	top = m_near*tan(m_fovy/2.0);
+>>>>>>> 6e62a7b2347283f5fdd7a17f6730a3bbc36d1128
 	//b = -t
 	bottom = -top;
 	//r = (w/h)*t
 	right = m_aspectRatio*top;
+<<<<<<< HEAD
 	//l = -r 
 	left = -right;
 	//near y far ya las tenemos
@@ -159,6 +167,14 @@ void PerspectiveCamera::updateProjection() {
 	m_projTrfm->setFrustum(left, right, bottom, top, m_near, m_far);
 
 	
+=======
+	//l = -r
+	left = -right;
+	//n y f las tenemos
+	
+	//añadir al frustum
+	m_projTrfm->setFrustum(left, right, bottom, top, m_near, m_far);
+>>>>>>> 6e62a7b2347283f5fdd7a17f6730a3bbc36d1128
 	/* =================== END YOUR CODE HERE ====================== */
 	updateFrustumPlanes();
 }
@@ -188,6 +204,7 @@ void  Camera::lookAt(const Vector3 & E,
 					 const Vector3 & at,
 					 const Vector3 & up) {
 	/* =================== PUT YOUR CODE HERE ====================== */
+<<<<<<< HEAD
 	Vector3 F;
 
 	m_E = E;
@@ -202,6 +219,18 @@ void  Camera::lookAt(const Vector3 & E,
 	// U = D x R
 
 
+=======
+	Vector3 D;
+	m_E = E;
+	m_At = at;
+	m_up = up;
+	//D = (E-at)/|(E-at)|;
+	D = E-at;
+	D.normalize();
+	//R = (up x D)/|(up x D)|
+	
+	//U = D x R
+>>>>>>> 6e62a7b2347283f5fdd7a17f6730a3bbc36d1128
 	/* =================== END YOUR CODE HERE ====================== */
 	setViewTrfm();
 }

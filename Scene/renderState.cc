@@ -16,7 +16,13 @@ RenderState::RenderState() :
 	m_activeShader(0),
 	m_drawBBox(false) {}
 
+/////////////Añadido de las transparencias//////////////
+float RenderState::getSc() const { return m_sc ; }
+void RenderState::setSc (float v) { m_sc = v ; }
+
 RenderState::~RenderState() {}
+
+	
 
 ///////////////////////////////////////////////////////////////
 // Matrix stack stuff
@@ -236,4 +242,7 @@ void RenderState::print() const {
 
 	printf("Shader: %s\n", m_activeShader ? m_activeShader->getName() : "NULL");
 	bool m_drawBBox;
+
+
+	
 }

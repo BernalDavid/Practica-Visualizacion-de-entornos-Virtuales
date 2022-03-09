@@ -28,7 +28,7 @@
 
 
 class RenderState {
-
+	
 public:
 	static RenderState *instance();
 
@@ -203,6 +203,12 @@ public:
 
 	void print() const;
 
+	//////AÑadido///////
+	float getSc() const ;
+	
+	void setSc(float v) ;
+	/////////////////////
+
 private:
 	RenderState();
 	~RenderState();
@@ -244,4 +250,7 @@ private:
 	// SkyBox
 
 	Node *m_skybox;
+
+	//Añadido//
+	float m_sc;
 };

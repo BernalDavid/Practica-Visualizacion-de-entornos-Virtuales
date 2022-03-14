@@ -34,5 +34,23 @@ varying vec2 f_texCoord;
 
 
 void main() {
+
+	vec3 acumulador_difuso;
+
+	acumulador_difuso = vec3(0.0, 0.0, 0.0);
+
+	for(int i=0; i < active_lights_n; ++i) {
+		//calculo de color
+
+		//COLOR_DIFUSO_DEL_MATERIAL * COLOR_DIFUSO_DE_LA_LUZ(i) * IRRADIANCIA_DE_LA_LUZ(i)
+		acumulador_difuso =acumulador_difuso + theMaterial.diffuse * theLights[i].diffuse 
+		
+	}
+
+	f_color = 
+
+	//coordenadas de textura que se le pasan del vertex-shader al fragment shader
+	f_texCoord = v_texCoord;
+
 	gl_Position = modelToClipMatrix * vec4(v_position, 1);
 }

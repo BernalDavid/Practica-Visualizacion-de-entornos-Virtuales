@@ -90,6 +90,22 @@ void Light::placeScene() {
 
 	/* =================== PUT YOUR CODE HERE ====================== */
 
+	/*
+	IF ES DIRECCIONAL
+		MODELVIEW*VECTOR_DIRECCION_DE_LA_LUZ
+	ELSE
+		IF ES_POSICIONAL
+			GUARDAR MODELVIEW * POSICION_DE_LA_LUZ
+		ELSE (ES SPOTLIGHT)
+			GUARDAR MODELVIEW * POSICION_DE_LA_LUZ
+			MODIFICAR LA DIRECCION DEL SPOT
+	*/
+	//LUCES DIRECCIONALES
+	if (m_type == directional) {
+		m_positionEye = modelView->transformVector(m_position);
+		//normalizar el vector
+		m_positionEye = m_positionEye.normalize();
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

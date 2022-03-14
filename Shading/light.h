@@ -154,3 +154,8 @@ private:
 	int      m_needsUpdate;           // internal use.
 
 };
+
+
+//DIFERENCIA ENTRE LUZ ESPECULAR Y DIFUSA
+//Especular: los rayos rebotan siempre con el mismo ángulo, sin distorsión (superficies lisas)
+//Difusa: los rayos de luz rebotan dispersos en direcciones distintas (superficies rugosas)

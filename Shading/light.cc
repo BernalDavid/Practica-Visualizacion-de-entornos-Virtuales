@@ -102,7 +102,7 @@ void Light::placeScene() {
 	*/
 	//LUCES DIRECCIONALES
 	if (m_type == directional) {
-		m_positionEye = modelView->transformVector(m_position);
+		m_positionEye = modelView.transformVector(m_position);
 		//normalizar el vector
 		m_positionEye = m_positionEye.normalize();
 	}

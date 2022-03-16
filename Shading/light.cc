@@ -106,6 +106,12 @@ void Light::placeScene() {
 		//normalizar el vector
 		m_positionEye = m_positionEye.normalize();
 	}
+	//LUCES POSICIONALES (m_type == positional)
+	else {
+		//modelview*posicion (un punto)
+		m_positionEye = modelView.transformPoint(m_position);
+	}
+
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

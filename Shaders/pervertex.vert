@@ -57,7 +57,19 @@ void aporte_posicional(in int i, in vec3 l, in vec3 n, inout vec3 acumulador) {
 	float NoL = lambert_factor(n,l);
 	
 	if (NoL > 0.0) {
-		acumulador += NoL * theLights[i].diffuse;
+		
+
+		//calcular atenuacion
+		// I * fdist(d)
+		// fdist(d) = 1/ (atenuacion_constante + atenuacion_lineal*d + atenuacion_cuadratica*d^2)
+		float fdist = theLights[i].attenuation[0] + theLights[i].attenuation[1]*l  + theLights[i].attenuation[2]*l*l;
+
+		if (fdist > 0.0) {
+			fdist = 1/fdist;
+
+			acumulador += NoL * theLights[i].diffuse * fdist;
+		}
+
 	}
 }
 

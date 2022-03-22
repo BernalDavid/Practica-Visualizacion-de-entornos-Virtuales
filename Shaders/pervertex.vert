@@ -37,37 +37,74 @@ varying vec2 f_texCoord;
 
 
 float lambert_factor(vec3 n, vec3 l) {
+	// n es el vector normal
+	// l es el vector de la luz
+
 	//SI EL PRODUCTO ESCALAR ES NEGATIVO, SE DEVUELVE 0
 	return max( dot(n,l), 0.0); //devolver producto escalar de n *l
 }
 
-void aporte_direccional(in int i, in vec3 l, in vec3 n, inout vec3 acumulador) {
+
+
+float especular_factor(in int i, in vec3 n, in vec3 l, in vec3 v, in float m) {
+	// n es el vector normal
+	// l es el vector de la luz
+	// v es el vector que va a la camara
+	// m es el brillo del material (theMaterial.shininess)
+
+	float factor_especular = 0.0;
+	//r = 2(n*l)n -l
+	vec3 r = 2*dot(n,l)*n-l;
+
+	//se debe normalizar para realizar los calculos
+	r = normalize(r);
+	//calcular factor especular = (n*l)* max(0, (r*v)^m)* m *intensidad_especular
+
+	factor_especular = dot(r,v);
+
+	//parte de max(0,(r*v)^m), si r*v es positivo, calculamos el factor
+	if (factor_especular > 0.0) {
+		factor_especular = pow(factor_especular,m);
+	}
+
+	return factor_especular;
+
+}
+
+void aporte_direccional(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acumulador_difuso, inout vec3 acumulador_especular) {
 
 	//NoL lo obtenemos con LAMBERT
 	float NoL = lambert_factor(n,l); // aporte de Lambert 
 
 	if (NoL > 0.0) {
-		acumulador += NoL * theMaterial.diffuse * theLights[i].diffuse;
+		acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse ;
+
+		//specular_factor(n,l) * color_especular_material * color_especular_de_la_luz * factor_difuso
+		//factor_especular = dot(n,l)* pow(factor_especular,m)  * theMaterial.specular * theLights[i].specular;
+		acumulador_especular += especular_factor(i, n, l, v, theMaterial.shininess);
 	}
 }
 
-void aporte_posicional(in int i, in vec3 l, in vec3 n, inout vec3 acumulador) {
+void aporte_posicional(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acumulador_difuso, inout vec3 acumulador_especular) {
 	
+	// d = distancia euclidea |pl-ps| = |L|
+	float d = length(l);
+
+	//normalizamos la distancia
+	l = normalize(l);
+
 	//LAMBERT
 	float NoL = lambert_factor(n,l);
 	
 	if (NoL > 0.0) {
-		
-
 		//calcular atenuacion
-		// I * fdist(d)
 		// fdist(d) = 1/ (atenuacion_constante + atenuacion_lineal*d + atenuacion_cuadratica*d^2)
-		float fdist = theLights[i].attenuation[0] + theLights[i].attenuation[1]*l  + theLights[i].attenuation[2]*l*l;
+		float fdist = theLights[i].attenuation[0] + theLights[i].attenuation[1]*d  + theLights[i].attenuation[2]*d*d;
 
 		if (fdist > 0.0) {
 			fdist = 1/fdist;
 
-			acumulador += NoL * theLights[i].diffuse * fdist;
+			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * fdist;
 		}
 
 	}
@@ -91,6 +128,7 @@ void main() {
 	vec3 positionEye;
 
 	vec3 acumulador_difuso = vec3(0.0, 0.0, 0.0);
+	vec3 acumulador_especular = vec3(0.0, 0.0, 0.0);
 
 
 	//positionEye = posicion del vertice en el sistema de coordenadas de la camara
@@ -121,14 +159,14 @@ void main() {
 			L = normalize(-1.0*theLights[i].position.xyz);	//funcion normalizar de GLSL
 
 			//CALCULAR LAMBERT (se hace detro de aporte_direccional)
-			aporte_direccional(i, L, N, acumulador_difuso);
+			aporte_direccional(i, L, N, V, acumulador_difuso, acumulador_especular);
 		}
 		//CASO DE LA LUZ POSICIONAL
 		else {
 			//vector del vertice a la luz (del punto de luz - posicion camara)
-			L = normalize(theLights[i].position.xyz - positionEye);
+			L = (theLights[i].position.xyz - positionEye);
 
-			aporte_posicional(i, L, N, acumulador_difuso);
+			aporte_posicional(i, L, N, V, acumulador_difuso, acumulador_especular);
 		}
 		//CASO DE LA SPOT
 	}

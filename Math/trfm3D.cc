@@ -438,7 +438,8 @@ void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	//Rotar el vector los radianes que nos dan
 	addRotVec(V,angle);
 	//Deshacer la traslacion
-	setTrans(P*(-1));
+	//setTrans(P*(-1));
+	setTrans(-1*P);		//correccion tras entrega parcial
 
 	/* =================== END YOUR CODE HERE ====================== */
 }

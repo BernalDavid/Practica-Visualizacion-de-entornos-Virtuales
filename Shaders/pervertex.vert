@@ -41,28 +41,28 @@ float lambert_factor(vec3 n, vec3 l) {
 	// l es el vector de la luz
 
 	//SI EL PRODUCTO ESCALAR ES NEGATIVO, SE DEVUELVE 0
-	return max( dot(n,l), 0.0); //devolver producto escalar de n *l
+	return max(dot(n,l), 0.0); //devolver producto escalar de n *l
 }
 
 
 
-float especular_factor(in int i, in vec3 n, in vec3 l, in vec3 v, in float m) {
+float especular_factor(in vec3 n, in vec3 l, in vec3 v, in float m) {
 	// n es el vector normal
 	// l es el vector de la luz
 	// v es el vector que va a la camara
 	// m es el brillo del material (theMaterial.shininess)
 
 	float factor_especular = 0.0;
+	
 	//r = 2(n*l)n -l
 	vec3 r = 2*dot(n,l)*n-l;
 
 	//se debe normalizar para realizar los calculos
 	r = normalize(r);
-	//calcular factor especular = (n*l)* max(0, (r*v)^m)* m *intensidad_especular
 
 	factor_especular = dot(r,v);
 
-	//parte de max(0,(r*v)^m), si r*v es positivo, calculamos el factor
+	//max(0,(r*v)^m), si r*v es positivo, calculamos el factor, si no el factor_especular = 0.0
 	if (factor_especular > 0.0) {
 		factor_especular = pow(factor_especular,m);
 	}
@@ -80,8 +80,9 @@ void aporte_direccional(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 ac
 		acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse ;
 
 		//specular_factor(n,l) * color_especular_material * color_especular_de_la_luz * factor_difuso
+		
 		//factor_especular = dot(n,l)* pow(factor_especular,m)  * theMaterial.specular * theLights[i].specular;
-		acumulador_especular += especular_factor(i, n, l, v, theMaterial.shininess);
+		acumulador_especular += NoL * especular_factor(n, l, v, theMaterial.shininess) * theMaterial.specular * theLights[i].specular;
 	}
 }
 
@@ -105,6 +106,8 @@ void aporte_posicional(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acu
 			fdist = 1/fdist;
 
 			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * fdist;
+
+			acumulador_especular += NoL * especular_factor(n,l,v, theMaterial.shininess) * theMaterial.specular * theLights[i].specular * fdist;
 		}
 
 	}
@@ -172,7 +175,7 @@ void main() {
 	}
 
 	f_color = vec4(0.0, 0.0, 0.0, 1.0); //rojo, verde, azul, opacidad
-	f_color.rgb = scene_ambient + acumulador_difuso;
+	f_color.rgb = scene_ambient + acumulador_difuso + acumulador_especular;
 
 	//coordenadas de textura que se le pasan del vertex-shader al fragment shader
 	f_texCoord = v_texCoord;

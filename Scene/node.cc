@@ -364,7 +364,6 @@ void Node::updateBB () {
 	si es un nodo intermedio: el bbox es la union de los bbox de los hijos (usar include())
 	llamar recursivamente a los hijos
 	*/
-	m_containerWC->init();
 
 	//NODO HOJA
 	if(m_gObject) {
@@ -374,7 +373,7 @@ void Node::updateBB () {
 	}
 	//NO INTERMEDIO
 	else {
-		
+		m_containerWC->init();
 		for(auto it = m_children.begin(), end = m_children.end();
         it != end; ++it) {
         	auto theChild = *it;

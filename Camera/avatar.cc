@@ -43,10 +43,38 @@ bool Avatar::advance(float step) {
 
 	Node *rootNode = Scene::instance()->rootNode();
 	/* =================== PUT YOUR CODE HERE ====================== */
+	
+	//avanzar la camara
 	if (m_walk)
 		m_cam->walk(step);
 	else
 		m_cam->fly(step);
+
+	//actualizamos la posicion de la esfera a la misma posicion en la que se encuentra la camara
+	m_bsph->setPosition(m_cam->getPosition());
+
+	//comprobamos si la esfera colisiona
+	const Node *nodoColision = rootNode->checkCollision(m_bsph);
+
+	//si no hay colision devolver true (se ha avanzado)
+
+	if (nodoColision == 0) {
+		return true;
+	}
+	//si hay colision deshacemos el avance y actualizamos la esfera
+	if (nodoColision != 0) {
+		//avanzar la camara
+		if (m_walk)
+			m_cam->walk(-step);
+		else
+			m_cam->fly(-step);
+
+		m_bsph->setPosition(m_cam->getPosition());
+
+		//si no se mueve devolvemos false
+		return false;
+	}
+
 	/* =================== END YOUR CODE HERE ====================== */
 	return true;
 }

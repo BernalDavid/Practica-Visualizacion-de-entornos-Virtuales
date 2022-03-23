@@ -431,9 +431,6 @@ void Node::updateWC() {
     	}
 	//actualizamos BBox
 	updateBB();
-	
-
-	
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -569,6 +566,42 @@ const Node *Node::checkCollision(const BSphere *bsph) const {
 	if (!m_checkCollision) return 0;
 	/* =================== PUT YOUR CODE HERE ====================== */
 
+	/*	Comprobar interseccion esfera-bbox
+		SI INTERSECTAN
+			si es nodo hoja devolver puntero al nodo con le que se colisiona (this)
+			si no es hoja iterar los hijos y comporbar si colisionan recursivamente
+		SI NO INTERSECTAN
+			devolver 0
+	*/
+
+	//intersecta
+	if (BSphereBBoxIntersect(bsph, this->m_containerWC) == IINTERSECT) {
+		//caso base
+		if (m_gObject) {
+			//devolver un puntero al nodo si hay interseccion
+			return this;
+		}
+		//caso recursivo
+		else {
+			for(auto it = m_children.begin(), end = m_children.end();
+				it != end; ++it) {
+				Node *theChild = *it;
+				const Node *nodoColision = 0;	//se guardará el nodo con el que colisiona la esfera, en caso de que exista colision
+				nodoColision = theChild->checkCollision(bsph);
+
+				//hacer return solo si existe colision, si no se sigue iterando
+				if (nodoColision!=0) {
+					return nodoColision;
+				}
+			}
+			//no existe colision en ninguno de los hijos
+			return 0;
+		}
+	}
+	//no intersecta
+	else {
+		return 0;
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

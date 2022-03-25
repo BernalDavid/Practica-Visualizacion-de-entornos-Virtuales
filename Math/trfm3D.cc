@@ -433,13 +433,12 @@ void Trfm3D::setScale(float scale ) {
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	//Traslacion P
+	//establecer los datos transformacion
 	setTrans(P);
 	//Rotar el vector los radianes que nos dan
 	addRotVec(V,angle);
-	//Deshacer la traslacion
-	//setTrans(P*(-1));
-	setTrans(-1*P);		//correccion tras entrega parcial
+	//Hacer la transformacion
+	addTrans(-1*P);		//correccion tras entrega parcial
 
 	/* =================== END YOUR CODE HERE ====================== */
 }

@@ -107,10 +107,20 @@ void Light::placeScene() {
 		m_positionEye = m_positionEye.normalize();
 	}
 	//LUCES POSICIONALES (m_type == positional)
-	else {
+	else  if (m_type == positional) {
 		//modelview*posicion (un punto)
 		m_positionEye = modelView.transformPoint(m_position);
 	}
+	//LUCES SPOTLIGHT
+	else {
+		//parte posicional (punto del foco)
+		m_positionEye = modelView.transformPoint(m_position);
+		//parte direccional (vector de direccion)
+		//usar spotDirectionEye en vez de m_positionEye para el vector de direccion
+		m_spotDirectionEye = modelView.transformVector(m_spotDirection);
+		m_spotDirectionEye = m_spotDirectionEye.normalize();
+	}
+
 
 	/* =================== END YOUR CODE HERE ====================== */
 }

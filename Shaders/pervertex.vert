@@ -107,10 +107,32 @@ void aporte_posicional(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acu
 
 			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * fdist;
 
-			acumulador_especular += NoL * especular_factor(n,l,v, theMaterial.shininess) * theMaterial.specular * theLights[i].specular * fdist;
+			acumulador_especular += NoL * theLights[i].specular * especular_factor(n,l,v, theMaterial.shininess) * theMaterial.specular * fdist;
 		}
 
 	}
+}
+
+void aporte_spotlight(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acumulador_difuso, inout vec3 acumulador_especular) {
+	//LAMBERT
+	float NoL = lambert_factor(n,l);
+
+	if (NoL > 0.0) {
+		//vector de la luz
+		vec3 v_luz = normalize(theLights[i].spotDir);
+		//coseno = angulo entre los vectores  de la luz y direccional (-l = de positionEye a la posición de la luz)
+		float coseno = dot(-l, v_luz);
+		//spotlight = cos^exponente_de_la_luz, si el coseno es positivo
+		if (coseno > 0.0) {
+			float spotlight = pow(coseno, theLights[i].exponent);
+
+			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * spotlight;
+
+			acumulador_especular += NoL * theLights[i].specular * especular_factor(n, l, v, theMaterial.shininess) *theMaterial.specular * spotlight;
+		}
+	}
+	
+
 }
 
 
@@ -165,13 +187,19 @@ void main() {
 			aporte_direccional(i, L, N, V, acumulador_difuso, acumulador_especular);
 		}
 		//CASO DE LA LUZ POSICIONAL
-		else {
+		else if (theLights[i].cosCutOff == 0.0) {
 			//vector del vertice a la luz (del punto de luz - posicion camara)
 			L = (theLights[i].position.xyz - positionEye);
 
 			aporte_posicional(i, L, N, V, acumulador_difuso, acumulador_especular);
 		}
 		//CASO DE LA SPOT
+		else {
+			//vector del vertice a la luz (del punto de luz - posicion camara) igual que en posicional
+			L = normalize(theLights[i].position.xyz - positionEye);
+
+			aporte_spotlight(i, L, N, V, acumulador_difuso, acumulador_especular);
+		}
 	}
 
 	f_color = vec4(0.0, 0.0, 0.0, 1.0); //rojo, verde, azul, opacidad

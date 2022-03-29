@@ -117,21 +117,23 @@ void aporte_spotlight(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acum
 	//LAMBERT
 	float NoL = lambert_factor(n,l);
 
+	float cspot = 0.0;
+
 	if (NoL > 0.0) {
 		//vector de la luz
-		vec3 v_luz = normalize(theLights[i].spotDir);
+		vec3 dir_spot = normalize(theLights[i].spotDir);
 		//coseno = angulo entre los vectores  de la luz y direccional (-l = de positionEye a la posición de la luz)
-		float coseno = dot(-l, v_luz);
-		//spotlight = cos^exponente_de_la_luz, si el coseno es positivo
-		if (coseno > 0.0) {
-			float spotlight = pow(coseno, theLights[i].exponent);
+		float coseno = dot(-l, dir_spot);
+		//comprobar si esta dentro
+		if (coseno > theLights[i].cosCutOff) {
+			//cspot = cos^exponente_de_la_luz, si el coseno es positivo
+			cspot = pow(coseno, theLights[i].exponent);
 
-			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * spotlight;
+			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * cspot;
 
-			acumulador_especular += NoL * theLights[i].specular * especular_factor(n, l, v, theMaterial.shininess) *theMaterial.specular * spotlight;
+			acumulador_especular += NoL * theLights[i].specular * especular_factor(n, l, v, theMaterial.shininess) *theMaterial.specular * cspot;
 		}
-	}
-	
+	}	
 
 }
 

@@ -121,7 +121,6 @@ void Light::placeScene() {
 		m_spotDirectionEye = m_spotDirectionEye.normalize();
 	}
 
-
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

@@ -192,17 +192,21 @@ void  Camera::lookAt(const Vector3 & E,
 					 const Vector3 & up) {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	
-	Vector3 F;
-	/*
+	Vector3 F, R;
+	m_E =E;
+
 	// D = F = (E-at)/|(E-at)|
-	F= at - E;
-	m_E = F;
-	m_D = F.normalize();
-	*/
-	/*
+	F = E - at;
+    F.normalize();
+    m_D = F;
+
 	// R = Up x D / ||Up||
+    R = crossVectors(up, m_D);
+    R.normalize();
+	m_R = R;
+
 	// U = D x R
-	*/
+    m_U = crossVectors(m_D, m_R);
 
 
 	/* =================== END YOUR CODE HERE ====================== */

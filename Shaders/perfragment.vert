@@ -17,5 +17,13 @@ varying vec3 f_normal;        // camera space
 varying vec2 f_texCoord;
 
 void main() {
+
+	f_position;
+	f_viewDirection;
+	f_normal; 
+	
+	//igual que en pervertex.vert
+	f_texCoord = v_texCoord;
+
 	gl_Position = modelToClipMatrix * vec4(v_position, 1.0);
 }

@@ -177,13 +177,12 @@ void main() {
 		}
 	}
 
+
 	//pdf GLSL -> glFragCOlor = vec4(vColor, 1.0)
 	vec4 vColor = vec4(0.0, 0.0, 0.0, 1.0); //rojo, verde, azul, opacidad
 	vColor.rgb = scene_ambient + acumulador_difuso + acumulador_especular;
 	//RGB = color, a= 1.0
-	gl_FragColor = vec4(vColor, 1.0);
-	
-
+	gl_FragColor = vec4(vColor.rgb, 1.0);
 
 
 }

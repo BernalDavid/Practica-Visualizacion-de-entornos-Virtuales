@@ -104,11 +104,13 @@ void aporte_posicional(in int i, in vec3 l, in vec3 n, in vec3 v, inout vec3 acu
 
 		if (fdist > 0.0) {
 			fdist = 1/fdist;
-
-			acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * fdist;
-
-			acumulador_especular += NoL * theLights[i].specular * especular_factor(n,l,v, theMaterial.shininess) * theMaterial.specular * fdist;
+		} else {
+			fdist = 1.0; /// No hay atenuacion ...la luz es tal como esta definida
 		}
+
+		acumulador_difuso += NoL * theLights[i].diffuse * theMaterial.diffuse * fdist;
+
+		acumulador_especular += NoL * theLights[i].specular * especular_factor(n,l,v, theMaterial.shininess) * theMaterial.specular * fdist;
 
 	}
 }

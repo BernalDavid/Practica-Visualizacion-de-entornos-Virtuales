@@ -547,6 +547,33 @@ void Node::setCulled(bool culled) {
 
 void Node::frustumCull(Camera *cam) {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	
+	//comprobar si el el BBox se encuentra dentro del frustum de la camara
+	//bbox se encuentra en m_containerWC
+	//planesBitM mascara para comprobar en que planos choca, no lo usamos (poner 0)
+	int dentroFrustum = cam->checkFrustum(m_containerWC, 0);
+
+	//si esta dentro = -1: ponerlo visible
+	if (dentroFrustum == -1) {
+		setCulled(0); //pone visibles el nodo y sus hijos
+	}
+	//si esta fuera = 1: ponerlo no visible
+	else if (dentroFrustum == 1) {
+		setCulled(1); //pone invisibles el nodo y sus hijos
+	}
+	//si intersecta = 0: llamar recursivamente a los hijos
+	//el se ve, porque intersecta (pero sus hijos se comprueban)
+	else if (dentroFrustum == 0) {
+
+		m_isCulled =0; //el nodo visible
+
+		for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
+        		auto theChild = *it;
+				//llamar a la funcion para cada hijo
+        		theChild->frustumCull(cam); // or any other thing
+	    }
+	}
+	
 
 	/* =================== END YOUR CODE HERE ====================== */
 }

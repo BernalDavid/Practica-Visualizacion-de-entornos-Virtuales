@@ -374,8 +374,7 @@ void Node::updateBB () {
 	//NO INTERMEDIO
 	else {
 		m_containerWC->init();
-		for(auto it = m_children.begin(), end = m_children.end();
-        it != end; ++it) {
+		for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
         	auto theChild = *it;
 			m_containerWC->include(theChild->m_containerWC);
     	}
@@ -424,11 +423,10 @@ void Node::updateWC() {
 		
 	}
 	
-	for(auto it = m_children.begin(), end = m_children.end();
-        it != end; ++it) {
+	for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
        		auto theChild = *it;
        		theChild->updateWC(); // or any other thing
-    	}
+    }
 	//actualizamos BBox
 	updateBB();
 
@@ -515,7 +513,8 @@ void Node::draw() {
 	else {
 		//NODO INTERMEDIO
 		//recorrer la lista de sus hijos (llamar recursivamente a draw())
-	    for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
+	    
+		for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
         		auto theChild = *it;
         		theChild->draw(); // or any other thing
 	    }
@@ -562,7 +561,7 @@ void Node::frustumCull(Camera *cam) {
 		setCulled(1); //pone invisibles el nodo y sus hijos
 	}
 	//si intersecta = 0: llamar recursivamente a los hijos
-	//el se ve, porque intersecta (pero sus hijos se comprueban)
+	//el nodo se ve, porque intersecta (pero sus hijos se comprueban)
 	else if (dentroFrustum == 0) {
 
 		m_isCulled =0; //el nodo visible
@@ -570,7 +569,7 @@ void Node::frustumCull(Camera *cam) {
 		for(auto it = m_children.begin(), end = m_children.end(); it != end; ++it) {
         		auto theChild = *it;
 				//llamar a la funcion para cada hijo
-        		theChild->frustumCull(cam); // or any other thing
+        		theChild->frustumCull(cam);
 	    }
 	}
 	

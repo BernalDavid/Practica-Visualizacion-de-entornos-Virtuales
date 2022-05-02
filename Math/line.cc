@@ -25,13 +25,12 @@ void Line::setFromAtoB(const Vector3 & A, const Vector3 & B) {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	
 	//obtienes la distancia
-	Vector3 v_aux = B-A;
+	m_O = A;
+	m_d = B-A;
 	//comprueba que no sean el mismo punto (distancia 0)
-	//if (v_aux.isZero()) {
-	if (v_aux.length()>0.0) {
+	if (m_d.length()>0.0) {
 			//obtienes el vector normalizado
-			m_O = A;
-			m_d = v_aux.normalize();
+			m_d = m_d.normalize();
 	}
 	else {
 		printf("Los puntos son iguales\n");

@@ -22,7 +22,9 @@ void RenderState::setSc (float v) { m_sc = v ; }
 
 RenderState::~RenderState() {}
 
-	
+//Añadido para multitextura
+float RenderState::getCloudsOffset() const { return m_cloudsOffset; }
+void RenderState::setCloudsOffset(float v) { m_cloudsOffset = v ; }
 
 ///////////////////////////////////////////////////////////////
 // Matrix stack stuff

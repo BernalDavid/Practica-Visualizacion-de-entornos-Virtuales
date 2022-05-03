@@ -209,6 +209,11 @@ public:
 	void setSc(float v) ;
 	/////////////////////
 
+	//Añadido para multitextura
+	float getCloudsOffset() const;
+
+	void setCloudsOffset(float v);
+
 private:
 	RenderState();
 	~RenderState();
@@ -253,4 +258,7 @@ private:
 
 	//Añadido//
 	float m_sc;
+
+	//Añadido para multitextura
+	float m_cloudsOffset;
 };

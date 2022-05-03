@@ -529,6 +529,9 @@ void animate(int value) {
 
 		RenderState::instance()->setSc(t);
 
+		//Multitextura
+		RenderState::instace()->setCloudsOffset(t);
+		
 		glutPostRedisplay();
 	}
 	// ##### END OF GAME/APP MAIN CODE #####

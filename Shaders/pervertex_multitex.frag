@@ -17,7 +17,7 @@ void main() {
 
 	//obtener coordenadas de textura 1 y 2
 	vec4 tColor0 = texture2D(texture0, f_texCoord);
-	vec4 tColor1 = texture2D(texture1, f_texCoord);
+	vec4 tColor1 = texture2D(texture1, f_texCoord+vec2(uCloudOffset, 0.0));
 
 	//mezclamos las texturas	
 	vec4 textureTotal = 0.5 * tColor0 + 0.5 * tColor1;

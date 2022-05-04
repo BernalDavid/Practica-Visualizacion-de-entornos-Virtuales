@@ -207,6 +207,9 @@ void ShaderProgram::beforeDraw() {
 		this->send_uniform("sc", rs->getSc());
 	}
 
+	
+
+
 	this->send_uniform("modelToCameraMatrix", rs->top(RenderState::modelview));
 	this->send_uniform("modelToWorldMatrix", rs->top(RenderState::model));
 	this->send_uniform("cameraToClipMatrix", rs->top(RenderState::projection));
@@ -265,8 +268,7 @@ void ShaderProgram::beforeDraw() {
 				if (tex2 != 0) {
 					tex2->bindGLUnit(Constants::gl_texunits::rest);
 					this->send_uniform("texture1", Constants::gl_texunits::rest); // Texture unit 2
-				
-					
+					this->send_uniform("uCloudOffset", rs->getCloudsOffset());
 				}
 			}
 		}

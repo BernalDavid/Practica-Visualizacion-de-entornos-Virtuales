@@ -186,10 +186,9 @@ void main() {
 	vec4 vColor = vec4(0.0, 0.0, 0.0, 1.0); //rojo, verde, azul, opacidad
 	vColor.rgb = scene_ambient*texColor.rgb + acumulador_difuso*texColor.rgb + acumulador_especular;
 	//vColor.rgb = acumulador_especular;
+	vColor.a =1.0;
+
 	//RGB = color, a= 1.0
-
-	
-
 
 	gl_FragColor = vColor;
 }

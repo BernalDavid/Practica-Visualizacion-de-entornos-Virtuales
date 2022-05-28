@@ -63,6 +63,35 @@ void CreateSkybox(GObject *gobj,
 		exit(1);
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
+	// Para utilizar las funciones de MaterialManager y NodeManager del comentario
+	MaterialManager *materialManager = MaterialManager::instance();
+	NodeManager *nodeManager = NodeManager::instance();
+
+	// Crear un nuevo material
+	string nombreMaterial = "materialSkyBox";
+	Material *material = materialManager->create(nombreMaterial);
+	
+	// Asingnar la textura del cubemap al material
+	// la textura esta en ctex
+	material->setTexture(ctex);
+
+	// Asignar el material al objeto geometrico del cubo
+	// el objeto esta en gobj (se recibe como parametro)
+	gobj->setMaterial(material);
+
+	// Crear un nuevo nodo
+	string nombreNodo = "nodoSkyBox";
+	Node *nodo = nodeManager->create(nombreNodo);
+
+	// Asignar el shader al nodo
+	// el shader esta en skyshader (se recibe como parametro)
+	nodo->attachShader(skyshader);
+
+	// Asignar objeto geometrico al nodo
+	nodo->attachGobject(gobj);
+
+	// Guardar el nodo en el RenderState
+	RenderState::instance()->setSkybox(nodo);
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -104,6 +133,35 @@ void DisplaySky(Camera *cam) {
 	if (!skynode) return;
 
 	/* =================== PUT YOUR CODE HERE ====================== */
+
+	// Almacenar el shader anterior
+	ShaderProgram *shaderAnterior = rs->getShader();
+
+	// Mover el skybox a la posicion de la camara
+	Vector3 posCamara = cam->getPosition(); 	//necesitamos la posicion, no la camara
+	Trfm3D *matrizTransformacion = new Trfm3D();
+	matrizTransformacion->setTrans(posCamara);	//transformacion que mueve a la pos de la camara
+	rs->push(RenderState::modelview);
+	rs->addTrfm(RenderState::modelview, matrizTransformacion);
+	
+	// Desactivar el z-buffer
+	glDisable(GL_DEPTH_TEST);
+
+	// Establecer el shader del skybox
+	ShaderProgram *shaderSkyBox = skynode->getShader(); //igual que se guarda el shader anterior
+	rs->setShader(shaderSkyBox);
+
+	// Dibujar el objeto skybox
+	GObject *objeto = skynode->getGobject();
+	objeto->draw();
+	rs->pop(RenderState::modelview);
+	
+	// Activar de nuevo z-buffer
+	glEnable(GL_DEPTH_TEST);
+
+	// Restarurar el shader anterior
+	rs->setShader(shaderAnterior);
+
 
 	/* =================== END YOUR CODE HERE ====================== */
 }

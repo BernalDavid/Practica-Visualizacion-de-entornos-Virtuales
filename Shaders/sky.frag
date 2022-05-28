@@ -1,7 +1,7 @@
 #version 120
 
 varying vec3 f_texCoord;
-uniform samplerCube cubemap;
+uniform samplerCube texture0;
 
 // To sample a texel from a cubemap, use "textureCube" function:
 //
@@ -10,5 +10,5 @@ uniform samplerCube cubemap;
 void main() {
 	gl_FragColor = vec4(1.0);
 
-	gl_FragColor = textureCube(cubemap, f_texCoord);
+	gl_FragColor = textureCube(texture0, f_texCoord);
 }

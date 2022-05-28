@@ -207,8 +207,6 @@ void ShaderProgram::beforeDraw() {
 		this->send_uniform("sc", rs->getSc());
 	}
 
-	
-
 
 	this->send_uniform("modelToCameraMatrix", rs->top(RenderState::modelview));
 	this->send_uniform("modelToWorldMatrix", rs->top(RenderState::model));
@@ -277,15 +275,27 @@ void ShaderProgram::beforeDraw() {
 			if (tex != 0) {
 				// bumpMapping in texture unit 1
 				tex->bindGLUnit(Constants::gl_texunits::bump);
-				this->send_uniform("bumpmap", Constants::gl_texunits::bump); // Texture unit 1
+				this->send_uniform("bumpmap", Constants::gl_texunits::bump);
 			}
 		}
 		if (this->has_capability("specmap")) {
 			tex = mat->getSpecularMap();
 			if (tex != 0) {
-				// bumpMapping in texture unit 1
 				tex->bindGLUnit(Constants::gl_texunits::specular);
-				this->send_uniform("specmap", Constants::gl_texunits::specular); // Texture unit 2
+				this->send_uniform("specmap", Constants::gl_texunits::specular);
+			}
+		}
+		//Environment maping
+		if (this->has_capability("cube_env")) {
+			//buscar la textura de nombre "CubeEnv"
+			tex = TextureManager::instance()->find("CubeEnv");
+			if (tex != 0) {
+				//Activar textura en la unidad de textura
+				tex->bindGLUnit(Constants::gl_texunits::envmap);
+				//Asignar el valor a la variabe uniforme envmap
+				this->send_uniform("envmap", Constants::gl_texunits::envmap);
+				//asignar el valor de la posicion de la camara a la variable uniforme campos
+				this->send_uniform("campos", rs->getCamera()->getPosition());
 			}
 		}
 		
